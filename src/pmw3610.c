@@ -287,41 +287,6 @@ static int check_product_id(const struct device *dev) {
     return 0;
 }
 
-// CPI変更用のビヘイビア
-static int pmw3610_cpi_up(const struct device *dev, struct pmw3610_data *data) {
-    // 現在のCPIを取得
-    uint32_t current_cpi = PMW3610_SVALUE_TO_CPI(data->cpi);
-
-    // CPIを200上げる（最大3200）
-    if (current_cpi < 3200) {
-        current_cpi += 200;
-    }
-
-    // 新しいCPIを設定
-    data->cpi.val1 = current_cpi;
-    return pmw3610_set_cpi(dev, current_cpi);
-}
-
-static int pmw3610_cpi_down(const struct device *dev, struct pmw3610_data *data) {
-    // 現在のCPIを取得
-    uint32_t current_cpi = PMW3610_SVALUE_TO_CPI(data->cpi);
-
-    // CPIを200下げる（最小200）
-    if (current_cpi > 200) {
-        current_cpi -= 200;
-    }
-
-    // 新しいCPIを設定
-    data->cpi.val1 = current_cpi;
-    return pmw3610_set_cpi(dev, current_cpi);
-}
-
-static int pmw3610_cpi_reset(const struct device *dev, struct pmw3610_data *data) {
-    // デフォルトのCPI（600）にリセット
-    data->cpi.val1 = CONFIG_PMW3610_CPI;
-    return pmw3610_set_cpi(dev, CONFIG_PMW3610_CPI);
-}
-
 static int set_cpi(const struct device *dev, uint32_t cpi) {
     /* Set resolution with CPI step of 200 cpi
      * 0x1: 200 cpi (minimum cpi)
@@ -668,7 +633,7 @@ static int pmw3610_report_data(const struct device *dev) {
         TOINT16((buf[PMW3610_X_L_POS] + ((buf[PMW3610_XY_H_POS] & 0xF0) << 4)), 12) / dividor;
     int16_t raw_y =
         TOINT16((buf[PMW3610_Y_L_POS] + ((buf[PMW3610_XY_H_POS] & 0x0F) << 8)), 12) / dividor;
-
+    
 #ifdef CONFIG_PMW3610_ADJUSTABLE_MOUSESPEED
     int16_t movement_size = abs(raw_x) + abs(raw_y);
 
