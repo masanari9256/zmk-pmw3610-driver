@@ -137,6 +137,11 @@ extern "C" {
 #define PMW3610_SCROLL_Y_POSITIVE 1
 #endif
 
+// CPI変更用の関数宣言
+int pmw3610_cpi_up(const struct device *dev, struct pmw3610_data *data);
+int pmw3610_cpi_down(const struct device *dev, struct pmw3610_data *data);
+int pmw3610_cpi_reset(const struct device *dev, struct pmw3610_data *data);
+
 #ifdef __cplusplus
 }
 #endif

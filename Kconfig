@@ -166,6 +166,12 @@ config PMW3610_ADJUSTABLE_MOUSESPEED
   bool "Enable Adujutable mouse speed"
   default n
 
+config PMW3610_ADJUSTABLE_CPI
+  bool "Enable adjustable CPI"
+  default n
+  help
+    Enable the ability to adjust CPI using key bindings.
+
 config PMW3610_MOVEMENT_THRESHOLD
     int "Movement threshold for automatic mouse layer activation"
     default 5
